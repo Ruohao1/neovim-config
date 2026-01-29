@@ -1,4 +1,6 @@
 return {
+	-- TODO: bind keymaps :h oil-actions
+	-- https://github.com/stevearc/oil.nvim/
 	{
 		"stevearc/oil.nvim",
 		---@module 'oil'
