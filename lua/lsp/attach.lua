@@ -17,7 +17,6 @@ function M.on_attach(client, buf)
 	map(buf, "n", "K", vim.lsp.buf.hover, "hover")
 	map(buf, "n", "<leader>cr", vim.lsp.buf.rename, "rename")
 	map(buf, "n", "<leader>ca", vim.lsp.buf.code_action, "code action")
-	map(buf, "n", "<leader>cd", vim.diagnostic.open_float, "open diagnotics")
 	map(buf, "n", "<leader>cl", vim.diagnostic.setloclist, "loclist")
 end
 

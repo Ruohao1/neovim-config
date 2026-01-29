@@ -26,6 +26,12 @@ return {
 					},
 				},
 			})
+			local map = vim.keymap.set
+			map("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { desc = "Find files" })
+			map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Live grep" })
+			map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Buffers" })
+			map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Help tags" })
+			map("n", "<leader>fd", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics" })
 		end,
 	},
 }
