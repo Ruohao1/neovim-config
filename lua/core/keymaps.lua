@@ -24,3 +24,22 @@ map("n", "<A-h>", "<cmd>vertical resize -3<cr>", opts)
 map("n", "<A-l>", "<cmd>vertical resize +3<cr>", opts)
 map("n", "<A-j>", "<cmd>resize -2<cr>", opts)
 map("n", "<A-k>", "<cmd>resize +2<cr>", opts)
+
+-- Replace word
+vim.keymap.set("n", "<leader>rw", function()
+	local cword = vim.fn.expand("<cword>")
+	local old = vim.fn.input("Replace (word): ", cword)
+	if old == "" then
+		return
+	end
+	local new = vim.fn.input("With: ")
+
+	-- With \V (very nomagic), only escape delimiter and backslash in the pattern
+	local pat = vim.fn.escape(old, [[\/\]])
+	-- In replacement, also escape '&' (whole-match expansion)
+	local rep = vim.fn.escape(new, [[\/\&]])
+
+	vim.cmd("silent! vimgrep /\\<\\V" .. pat .. "\\>/gj **/*")
+	vim.cmd("copen")
+	vim.cmd("cdo %s/\\<\\V" .. pat .. "\\>/" .. rep .. "/gc | update")
+end, { desc = "Project replace (confirm each) via quickfix" })
