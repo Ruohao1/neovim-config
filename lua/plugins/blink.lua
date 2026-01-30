@@ -52,7 +52,7 @@ return {
 			completion = {
 				documentation = { auto_show = false },
 				list = { selection = { preselect = true, auto_insert = false } },
-				menu = { border = "rounded" },
+				menu = { border = "single" },
 			},
 
 			-- Default list of enabled providers defined so that you can extend it

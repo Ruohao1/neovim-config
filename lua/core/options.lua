@@ -33,8 +33,7 @@ vim.opt.undofile = true
 
 -- Diagnostics UI
 vim.diagnostic.config({
-  virtual_text = true,
-  severity_sort = true,
-  float = { border = "rounded" },
+	virtual_text = true,
+	severity_sort = true,
+	float = { border = "single" },
 })
-

@@ -7,12 +7,12 @@ return {
 		---@type oil.SetupOpts
 		opts = {
 			float = {
-				border = "rounded",
+				border = "single",
 				max_width = 0.8,
 				max_height = 0.8,
 			},
 			confirmation = {
-				border = "rounded",
+				border = "single",
 				win_options = {
 					winblend = 0,
 				},
