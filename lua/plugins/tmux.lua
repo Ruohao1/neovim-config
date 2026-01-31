@@ -70,8 +70,32 @@ return {
 				enable_default_keybindings = false,
 			},
 		},
-		config = function(_, opts)
-			return require("tmux").setup(opts)
+		config = function(_, plugin_opts)
+			local tmux = require("tmux")
+			tmux.setup(plugin_opts)
+
+			local map = vim.keymap.set
+			local o = { noremap = true, silent = true }
+
+			-- NAVIGATION (Alt+h/j/k/l) + window next/prev (Alt+n/p)
+			map({ "n", "t" }, "<M-h>", tmux.move_left, o)
+			map({ "n", "t" }, "<M-j>", tmux.move_bottom, o)
+			map({ "n", "t" }, "<M-k>", tmux.move_top, o)
+			map({ "n", "t" }, "<M-l>", tmux.move_right, o)
+			map({ "n", "t" }, "<M-n>", tmux.next_window, o)
+			map({ "n", "t" }, "<M-p>", tmux.previous_window, o)
+
+			-- RESIZE (Ctrl+h/j/k/l)
+			map({ "n", "t" }, "<C-h>", tmux.resize_left, o)
+			map({ "n", "t" }, "<C-j>", tmux.resize_bottom, o)
+			map({ "n", "t" }, "<C-k>", tmux.resize_top, o)
+			map({ "n", "t" }, "<C-l>", tmux.resize_right, o)
+
+			-- SWAP (Ctrl+Alt+h/j/k/l)  => <C-M-h> etc
+			map({ "n", "t" }, "<C-M-h>", tmux.swap_left, o)
+			map({ "n", "t" }, "<C-M-j>", tmux.swap_bottom, o)
+			map({ "n", "t" }, "<C-M-k>", tmux.swap_top, o)
+			map({ "n", "t" }, "<C-M-l>", tmux.swap_right, o)
 		end,
 	},
 }
