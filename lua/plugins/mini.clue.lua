@@ -108,6 +108,11 @@ return {
 					{ mode = "n", keys = "cc", desc = "Line" },
 					{ mode = "n", keys = "y", desc = "+Yank" },
 					{ mode = "n", keys = "yy", desc = "Line" },
+
+					{ mode = "n", keys = "gc", desc = "+Comment" },
+					{ mode = "n", keys = "gcc", desc = "Line" },
+					{ mode = "v", keys = "gc", desc = "+Inside textobject" },
+					{ mode = "v", keys = "gca", desc = "+Around textobject" },
 				},
 
 				window = {
