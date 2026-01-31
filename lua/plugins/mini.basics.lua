@@ -26,10 +26,10 @@ return {
 				option_toggle_prefix = [[\]],
 
 				-- Window navigation with <C-hjkl>, resize with <C-arrow>
-				windows = true,
+				windows = false,
 
 				-- Move cursor in Insert, Command, and Terminal mode with <M-hjkl>
-				move_with_alt = true,
+				move_with_alt = false,
 			},
 
 			-- Autocommands. Set field to `false` to disable
