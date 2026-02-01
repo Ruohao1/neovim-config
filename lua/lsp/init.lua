@@ -11,7 +11,6 @@ function M.setup()
 	local on_attach = require("lsp.attach").on_attach
 	local root = require("lsp.root")
 
-	-- Base opts applied to every server unless overridden
 	local base = {
 		on_attach = on_attach,
 		flags = {
@@ -26,6 +25,7 @@ function M.setup()
 			automatic_installation = false,
 		})
 	end
+	local lspconfig = require("lspconfig")
 
 	for _, name in ipairs(servers) do
 		local ok, mod = pcall(require, ("lsp.servers.%s"):format(name))
@@ -36,19 +36,29 @@ function M.setup()
 
 		local server_opts = type(mod) == "function" and mod(base) or (mod.opts or mod)
 
-		-- If a server module doesn’t set root_dir, apply a robust default.
 		if server_opts.root_dir == nil then
 			server_opts.root_dir = root.make_root_dir({
 				markers = root.default_markers,
-				-- Decide whether this server should attach in single-file mode:
-				-- true: attach even if no project root found
-				-- false: require a project root
 				allow_single_file = true,
 			})
 		end
 
 		local opts = vim.tbl_deep_extend("force", {}, base, server_opts)
-		vim.lsp.config[name] = opts
+
+		local default_cfg = lspconfig[name]
+				and lspconfig[name].document_config
+				and lspconfig[name].document_config.default_config
+			or nil
+
+		if not default_cfg then
+			vim.notify(
+				("LSP: no lspconfig default for %s (missing plugin or wrong name?)"):format(name),
+				vim.log.levels.ERROR
+			)
+		else
+			vim.lsp.config[name] = vim.tbl_deep_extend("force", {}, default_cfg, opts)
+			vim.lsp.enable(name)
+		end
 	end
 end
 

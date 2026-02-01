@@ -1,5 +1,5 @@
 return {
-	{ "neovim/nvim-lspconfig" }, -- keep for server defaults + util
+	{ "neovim/nvim-lspconfig" },
 
 	{
 		"mason-org/mason.nvim",
@@ -32,30 +32,29 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-			local util = require("lspconfig.util")
-
-			vim.lsp.config("pyright", {
-				root_dir = util.root_pattern(
-					".venv",
-					"pyproject.toml",
-					"requirements.txt",
-					".git",
-					"setup.py",
-					"setup.cfg"
-				),
-				settings = {
-					python = {
-						analysis = {
-							autoSearchPaths = true,
-							diagnosticMode = "openFilesOnly",
-							useLibraryCodeForTypes = true,
-							reportUnusedImport = "none",
-						},
-					},
-				},
-			})
-
-			vim.lsp.enable({ "pyright" })
+			require("lsp")
+			-- local util = require("lspconfig.util")
+			--
+			-- vim.lsp.config("pyright", {
+			-- 	root_dir = util.root_pattern(
+			-- 		".venv",
+			-- 		"pyproject.toml",
+			-- 		"requirements.txt",
+			-- 		".git",
+			-- 		"setup.py",
+			-- 		"setup.cfg"
+			-- 	),
+			-- 	settings = {
+			-- 		python = {
+			-- 			analysis = {
+			-- 				autoSearchPaths = true,
+			-- 				diagnosticMode = "openFilesOnly",
+			-- 				useLibraryCodeForTypes = true,
+			-- 				reportUnusedImport = "none",
+			-- 			},
+			-- 		},
+			-- 	},
+			-- })
 		end,
 	},
 }

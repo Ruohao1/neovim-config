@@ -2,6 +2,7 @@ local M = {}
 
 M.default_markers = {
 	".git",
+	".venv",
 	"pyproject.toml",
 	"setup.py",
 	"setup.cfg",
