@@ -1,4 +1,4 @@
 return {
 	"vimpostor/vim-tpipeline",
-	event = "VeryLazy",
+	event = "VeryLazy", -- No flickring
 }
