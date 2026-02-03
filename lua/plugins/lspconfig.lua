@@ -1,60 +1,20 @@
 return {
-	{ "neovim/nvim-lspconfig" },
-
 	{
-		"mason-org/mason.nvim",
-		opts = {},
-	},
-	{
-		"mason-org/mason-lspconfig.nvim",
-		opts = {
-			ensure_installed = {
-				"lua_ls",
+	  "neovim/nvim-lspconfig",
+	  config = function()
+      local map = vim.keymap.set
 
-				"pyright",
-				"ruff",
+      map("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
+      map("n", "K", vim.lsp.buf.hover, { desc = "Hover Documentation" })
+      map("n", "gi", vim.lsp.buf.implementation, { desc = "Go to Implementation" })
+      map("n", "S", vim.lsp.buf.signature_help, { desc = "Signature Help" })
 
-				"gopls",
-				"rust_analyzer",
+      map("n", "<Leader>li", "<Cmd>LspInfo<CR>", { desc = "LspInfo" })
+      map("n", "<Leader>lr", "<Cmd>LspRestart<CR>", { desc = "LspRestart" })
 
-				"clangd",
-
-				"ts_ls",
-				"html",
-				"cssls",
-				"jsonls",
-				"yamlls",
-			},
-		},
-		dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig" },
-	},
-
-	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			require("lsp")
-			-- local util = require("lspconfig.util")
-			--
-			-- vim.lsp.config("pyright", {
-			-- 	root_dir = util.root_pattern(
-			-- 		".venv",
-			-- 		"pyproject.toml",
-			-- 		"requirements.txt",
-			-- 		".git",
-			-- 		"setup.py",
-			-- 		"setup.cfg"
-			-- 	),
-			-- 	settings = {
-			-- 		python = {
-			-- 			analysis = {
-			-- 				autoSearchPaths = true,
-			-- 				diagnosticMode = "openFilesOnly",
-			-- 				useLibraryCodeForTypes = true,
-			-- 				reportUnusedImport = "none",
-			-- 			},
-			-- 		},
-			-- 	},
-			-- })
-		end,
+      map("n", "<leader>cr", vim.lsp.buf.rename, {desc = "rename"})
+      map("n", "<leader>ca", vim.lsp.buf.code_action, {desc = "code action"})
+      map("n", "<leader>cl", vim.diagnostic.setloclist, {desc = "loclist"})
+    end
 	},
 }

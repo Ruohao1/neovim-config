@@ -1,65 +1,37 @@
 local M = {}
 
-local servers = {
-	"pyright",
-	"lua_ls",
-}
+M.servers = function()
+  local lsp_dir = vim.fn.stdpath("config") .. "/lua/lsp/servers/"
+  local lsp_servers = {}
 
-function M.setup()
-	require("lsp.diagnostics").setup()
+  if vim.fn.isdirectory(lsp_dir) == 1 then
+    for _, file in ipairs(vim.fn.readdir(lsp_dir)) do
+      if file:match("%.lua$") and file ~= "init.lua" then
+        local server_name = file:gsub("%.lua$", "")
+        table.insert(lsp_servers, server_name)
+      end
+    end
+  end
+  vim.print(lsp_servers)
+  return lsp_servers
+end
 
-	local on_attach = require("lsp.attach").on_attach
-	local root = require("lsp.root")
+M.setup = function()
+  local lsp_servers = M.servers()
 
-	local base = {
-		on_attach = on_attach,
-		flags = {
-			debounce_text_changes = 150,
-		},
-	}
+  local ok, mason_lsp = pcall(require, "mason-lspconfig")
+  if ok then
+    mason_lsp.setup({
+      ensure_installed = lsp_servers,
+    })
+  end
 
-	local ok_mason, mason_lspconfig = pcall(require, "mason-lspconfig")
-	if ok_mason then
-		mason_lspconfig.setup({
-			ensure_installed = servers,
-			automatic_installation = false,
-		})
-	end
-	local lspconfig = require("lspconfig")
+  for _, server in ipairs(lsp_servers) do
+    local config = require("lsp.servers." .. server)
+    vim.lsp.config(server, config)
+  end
 
-	for _, name in ipairs(servers) do
-		local ok, mod = pcall(require, ("lsp.servers.%s"):format(name))
-		if not ok then
-			vim.notify(("LSP: missing module lsp.servers.%s"):format(name), vim.log.levels.WARN)
-			mod = {}
-		end
-
-		local server_opts = type(mod) == "function" and mod(base) or (mod.opts or mod)
-
-		if server_opts.root_dir == nil then
-			server_opts.root_dir = root.make_root_dir({
-				markers = root.default_markers,
-				allow_single_file = true,
-			})
-		end
-
-		local opts = vim.tbl_deep_extend("force", {}, base, server_opts)
-
-		local default_cfg = lspconfig[name]
-				and lspconfig[name].document_config
-				and lspconfig[name].document_config.default_config
-			or nil
-
-		if not default_cfg then
-			vim.notify(
-				("LSP: no lspconfig default for %s (missing plugin or wrong name?)"):format(name),
-				vim.log.levels.ERROR
-			)
-		else
-			vim.lsp.config[name] = vim.tbl_deep_extend("force", {}, default_cfg, opts)
-			vim.lsp.enable(name)
-		end
-	end
+  vim.lsp.enable(lsp_servers)
 end
 
 return M
