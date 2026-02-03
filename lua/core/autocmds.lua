@@ -64,13 +64,13 @@ au("LspAttach", {
 			vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
 		end
 
-		map("n", "gd", vim.lsp.buf.definition, "LSP: go to definition")
-		map("n", "gD", vim.lsp.buf.declaration, "LSP: go to declaration")
-		map("n", "gr", vim.lsp.buf.references, "LSP: references")
-		map("n", "gi", vim.lsp.buf.implementation, "LSP: implementation")
-		map("n", "K", vim.lsp.buf.hover, "LSP: hover")
-		map("n", "<leader>rn", vim.lsp.buf.rename, "LSP: rename")
-		map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "LSP: code action")
+		map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+		map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+		map("n", "gr", vim.lsp.buf.references, "References")
+		map("n", "gi", vim.lsp.buf.implementation, "Implementation")
+		map("n", "K", vim.lsp.buf.hover, "Kover")
+		map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+		map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
 
 		map("n", "<leader>ld", vim.diagnostic.open_float, "Diagnostics: float")
 		map("n", "[d", vim.diagnostic.goto_prev, "Diagnostics: prev")
@@ -78,11 +78,12 @@ au("LspAttach", {
 
 		map("n", "<leader>lf", function()
 			vim.lsp.buf.format({ bufnr = bufnr, timeout_ms = 2000 })
-		end, "LSP: format buffer")
+		end, "Format buffer")
 
 		-- Doctor helpers (buffer-local)
-		map("n", "<leader>li", "<cmd>LspInfo<CR>", "LSP: Info")
-		map("n", "<leader>lr", function()
+		map("n", "<leader>li", "<cmd>LspInfo<CR>", "LspInfo")
+		map("n", "<Leader>lr", "<Cmd>LspRestart<CR>", "LspRestart")
+		map("n", "<leader>ls", function()
 			local clients = vim.lsp.get_clients({ bufnr = bufnr })
 			if #clients == 0 then
 				vim.notify("No LSP clients attached to this buffer")
@@ -93,6 +94,6 @@ au("LspAttach", {
 				table.insert(lines, ("- %s (id=%d) root=%s"):format(c.name, c.id, c.config.root_dir or "nil"))
 			end
 			vim.notify(table.concat(lines, "\n"))
-		end, "LSP: Show attached clients/root")
+		end, "Show attached clients/root")
 	end,
 })
